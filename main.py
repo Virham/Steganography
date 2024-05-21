@@ -61,10 +61,11 @@ def encode_image(img : Image, file) -> Image:
             if len(data) <= index + 2:
                 d = data[index:]
                 d += [0] * (3 - len(d))
+                pixels[i, j] = convert_pixel(pixels[i, j], d)
 
                 next_index = (i + j * image.width + 1)
                 x,y = next_index % image.width, next_index // image.width
-                pixels[x, y] = (255, 0, 0, 255)
+                # pixels[x, y] = (255, 0, 0, 255)
                 return image
 
             d = data[index:index+3]
@@ -84,16 +85,15 @@ def decode_image(image : Image):
     
     size = 0
     size_bytes = []
-    
+
     for j in range(image.height):
         for i in range(image.width):
             byte.extend(get_pixel_data(pixels[i, j]))
             if len(byte) >= 8:
                 d = "0b" + "".join([str(b) for b in byte[0:8]])
-                byte = byte[8:]
-                
+                byte = byte[8:]                
                 decimal = int(d, 2)
-                
+
                 if not size:
                     size_bytes.append(decimal)
                     if len(size_bytes) == 4:
