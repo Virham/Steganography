@@ -1,4 +1,5 @@
 from PIL import Image
+import math
 import sys
 
 
@@ -15,7 +16,7 @@ def get_min_img_size(img, data):
     s = get_max_data_size(img)
     scale = max(1, len(data) // 8 / s)
     
-    return (round(img.width * scale), round(img.height * scale))
+    return (math.ceil(img.width * scale), math.ceil(img.height * scale))
 
 def encode_string(string):
     data = []
